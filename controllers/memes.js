@@ -1,71 +1,42 @@
 const memesRouter = require('express').Router()
-
-// memesRouter.get('/', async (request, response) => {
-
-//     const allMemes = await Meme.find({})
-
-//     return response.json(allMemes)
-
-// })
-
-// memesRouter.post('/', async (request, response) => {
-
-// })
-
-// memesRouter.get('/:id', async (request, response) => {
-
-//     const requiredMeme = await Meme.find()
-// })
-
-let memes = [
-    {
-        id: 1,
-        name: 'MS Dhoni',
-        url: 'https://images.pexels.com/photos/3573382/pexels-photo-3573382.jpeg',
-        caption: 'Meme for my place'
-    },
-    {
-        id: 2,
-        name: 'Virat',
-        url: 'https://images.pexels.com/photos/3572382/pexels-photo-3573382.jpeg',
-        caption: 'Meme for xmeme'
-    }
-]
+const Meme = require('../models/meme')
 
 memesRouter.get('/', async (request, response) => {
     
-    return response.json(memes)
+    const allMemes = await Meme.find({})
+    return response.json(allMemes)
 })
 
 memesRouter.post('/', async (request, response) => {
 
     const body = request.body
 
-    console.log(body)
-
-    const new_meme = {
-        id: body.id,
+    const newMeme = new Meme({
         name: body.name,
         url: body.url,
         caption: body.caption
-    }
+    })
 
-    memes = memes.concat(new_meme)
-    return response.json(new_meme)
+    const savedMeme = await newMeme.save()
+
+    // const returnObj = {
+    //     'id': savedMeme._id.toString()
+    // }
+
+    return response.json(savedMeme)
 })
 
-memesRouter.get('/:id', async (request, response) => {
+memesRouter.get('/:id', async (request, response, next) => {
 
-    const id = Number(request.params.id)
-    const meme = memes.find(meme => meme.id === id)
+    try {
 
-    if (meme) {
-        return response.json(meme)
+        const getAMeme = await Meme.findById(request.params.id)
+        return response.json(getAMeme)
+    }
+    catch(exception) {
+        next(exception)
     }
 
-    else {
-        response.status(404).end()
-    }
 })
 
 module.exports = memesRouter
