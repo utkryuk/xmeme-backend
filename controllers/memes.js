@@ -7,7 +7,7 @@ memesRouter.get('/', async (request, response) => {
     return response.json(allMemes)
 })
 
-memesRouter.post('/', async (request, response) => {
+memesRouter.post('/', async (request, response, next) => {
 
     const body = request.body
 
@@ -17,13 +17,17 @@ memesRouter.post('/', async (request, response) => {
         caption: body.caption
     })
 
-    const savedMeme = await newMeme.save()
-
-    // const returnObj = {
-    //     'id': savedMeme._id.toString()
-    // }
-
-    return response.json(savedMeme)
+    try {
+        const savedMeme = await newMeme.save()
+        // const returnObj = {
+        //     'id': savedMeme._id.toString()
+        // }
+        return response.json(savedMeme)
+    }
+    catch (exception) {
+        next(exception)
+    }
+    
 })
 
 memesRouter.get('/:id', async (request, response, next) => {

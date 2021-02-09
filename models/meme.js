@@ -1,10 +1,22 @@
 const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 const memeSchema = mongoose.Schema({
-    name: String,
-    url: String,
-    caption: String
+    name: {
+        type: String,
+        required: true
+    },
+    url: {
+        type: String,
+        required: true
+    },
+    caption: {
+        type: String,
+        required: true
+    }
 })
+
+memeSchema.plugin(uniqueValidator)
 
 memeSchema.set('toJSON', {
     transform : (document, returnedObj) => {
