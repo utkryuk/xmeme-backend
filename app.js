@@ -24,8 +24,9 @@ const databaseConnect = async (mongoUrl) => {
 
 databaseConnect(mongoUrl)
 
-
-app.use(middleware.requestLogger)
+if (process.env.NODE_ENV === 'development') {
+    app.use(middleware.requestLogger)
+}
 
 app.use('/memes', memesRouter)
 
