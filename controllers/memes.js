@@ -1,5 +1,6 @@
 const memesRouter = require('express').Router()
 const Meme = require('../models/meme')
+const IResponse = require('../models/iResponse')
 
 memesRouter.get('/', async (request, response) => {
     
@@ -24,10 +25,11 @@ memesRouter.post('/', async (request, response, next) => {
 
     try {
         const savedMeme = await newMeme.save()
-        // const returnObj = {
-        //     'id': savedMeme._id.toString()
-        // }
-        return response.json(savedMeme)
+        const returnObj = new IResponse({
+            id: savedMeme._id.toString()
+        })
+        const returnedObj = await returnObj.save()
+        return response.json(returnedObj)
     }
     catch (exception) {
         next(exception)
