@@ -3,8 +3,13 @@ const Meme = require('../models/meme')
 
 memesRouter.get('/', async (request, response) => {
     
-    const allMemes = await Meme.find({})
-    return response.json(allMemes)
+    let allMemes = await Meme.find({})
+
+    if (allMemes.length > 100) {
+        allMemes = allMemes.slice(0, 100)
+    }
+
+    return response.json(allMemes.reverse())
 })
 
 memesRouter.post('/', async (request, response, next) => {
