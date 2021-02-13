@@ -3,7 +3,10 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const express = require('express')
 
+const cors = require('cors')
 const app = express()
+
+app.use(cors())
 app.use(express.json())
 
 const memesRouter = require('./controllers/memes')
