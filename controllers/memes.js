@@ -2,17 +2,18 @@ const memesRouter = require('express').Router()
 const Meme = require('../models/meme')
 const IResponse = require('../models/iResponse')
 
+// get memes (upto 100)
 memesRouter.get('/', async (request, response) => {
     
-    let allMemes = await Meme.find({})
+    let allMemes = await Meme
+        .find({})
+        .sort({_id: -1}) // _id field has date embedded in it and -1 will sort descending (newest to oldest.)
+        .limit(100) // will limit the find to only 100 records
 
-    if (allMemes.length > 100) {
-        allMemes = allMemes.slice(0, 100)
-    }
-
-    return response.json(allMemes.reverse())
+    return response.json(allMemes)
 })
 
+// post meme
 memesRouter.post('/', async (request, response, next) => {
 
     const body = request.body
@@ -37,6 +38,8 @@ memesRouter.post('/', async (request, response, next) => {
     
 })
 
+
+// get meme by Id
 memesRouter.get('/:id', async (request, response, next) => {
 
     try {

@@ -29,6 +29,18 @@ describe('GET request', () => {
 
     })
 
+    test('receiving empty array if no memes available', async () => {
+        
+        await Meme.deleteMany({})
+
+        const response = await api
+            .get('/memes')
+            .expect(200)
+        
+        expect(response.body).toStrictEqual([])
+
+    })
+
     test('receiving a single meme by sending correct id', async () => {
 
         const memesAtStart = await helper.memesInDb()

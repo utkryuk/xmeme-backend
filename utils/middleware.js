@@ -22,7 +22,7 @@ const errorHandler = (error, request, response, next) => {
         return response.status(400).json({error: error.message})
     }
     else if (error.name === 'MongooseError') {
-        return response.status(500).json({error: error.message})
+        return response.status(500).json({error: 'Internal Server Error'})
     }
     next(error)
 }

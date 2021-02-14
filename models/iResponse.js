@@ -8,6 +8,7 @@ const iResponseSchema = mongoose.Schema({
     }
 })
 
+// Enforces the validation
 iResponseSchema.plugin(uniqueValidator)
 
 iResponseSchema.set('toJSON', {

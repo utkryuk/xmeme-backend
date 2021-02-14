@@ -16,6 +16,7 @@ const memeSchema = mongoose.Schema({
     }
 })
 
+// Enforces the validation
 memeSchema.plugin(uniqueValidator)
 
 memeSchema.set('toJSON', {

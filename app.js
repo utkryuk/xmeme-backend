@@ -3,6 +3,7 @@ const logger = require('./utils/logger')
 const mongoose = require('mongoose')
 const express = require('express')
 
+// to allow cors request
 const cors = require('cors')
 const app = express()
 
@@ -27,6 +28,7 @@ const databaseConnect = async (mongoUrl) => {
 
 databaseConnect(mongoUrl)
 
+// We only want request logging in development mode
 if (process.env.NODE_ENV === 'development') {
     app.use(middleware.requestLogger)
 }
